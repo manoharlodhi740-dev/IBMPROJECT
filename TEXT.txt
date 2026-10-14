@@ -1,0 +1,123 @@
+from pptx import Presentation
+from pptx.util import Inches, Pt
+from pptx.dml.color import RGBColor
+
+prs = Presentation()
+prs.slide_width = Inches(13.333)
+prs.slide_height = Inches(7.5)
+blank_layout = prs.slide_layouts[6]
+
+slides_data = [
+    {
+        "title": "CardioGuard",
+        "subtitle": "AI Early Cardiovascular Risk Assessment System\nAICTE | IBM SkillsBuild Internship Project 2026",
+        "points": [
+            "Target UN SDG: Goal 3: Good Health and Well-Being (Target 3.4)",
+            "Presented by: Manohar Lodhi",
+            "Department: Department of Computer Science & Engineering"
+        ]
+    },
+    {
+        "title": "1. Problem Statement & SDG Alignment",
+        "subtitle": "Targeting Non-Communicable Diseases (SDG 3.4)",
+        "points": [
+            "Asymptomatic Progression: Early cardiac risks (hypertension, elevated cholesterol) develop without noticeable symptoms until critical events occur.",
+            "Primary Care Diagnostic Gap: Rural clinics and PHCs lack continuous access to specialized cardiologists and costly diagnostic tools.",
+            "Complex Diagnostic Reports: Patients struggle to interpret technical lab values, delaying critical lifestyle interventions.",
+            "UN SDG 3 (Target 3.4): Aims to reduce premature mortality through early prevention, automated risk screening, and proactive triage."
+        ]
+    },
+    {
+        "title": "2. Proposed Solution: CardioGuard",
+        "subtitle": "Accessible Machine Learning for Preventative Health",
+        "points": [
+            "Non-Invasive Risk Stratification: Evaluates standard vitals (Age, Resting BP, Serum Cholesterol, Fasting Blood Sugar, Max Heart Rate) to predict risk tiers.",
+            "Explainable AI (XAI): Transparently highlights which specific physiological indicators contribute most to the risk score.",
+            "Actionable Preventive Roadmaps: Delivers instant dietary adjustments, exercise targets, and doctor consultation guidance.",
+            "Accessible Web Architecture: Implemented via ml.py on Streamlit for responsive execution across community clinic hardware."
+        ]
+    },
+    {
+        "title": "3. System Architecture & Workflow",
+        "subtitle": "End-to-End Pipeline in ml.py",
+        "points": [
+            "Stage 1 - User Input: Enter patient vitals via an interactive web interface powered by ml.py.",
+            "Stage 2 - Preprocessing: Standard scaling of continuous variables, handling missing values, and binary categorical encoding.",
+            "Stage 3 - ML Classification: Random Forest Classifier trained on clinical cardiovascular datasets with cross-validation.",
+            "Stage 4 - Triage Output: Risk probability percentage, Low/High risk categorization, and preventive clinical guidance."
+        ]
+    },
+    {
+        "title": "4. Model Benchmarking & Results",
+        "subtitle": "Supervised Learning Evaluation",
+        "points": [
+            "Logistic Regression: Accuracy ~82% | Effective baseline; limited on complex non-linear boundaries.",
+            "Decision Tree Classifier: Accuracy ~80% | Highly interpretable, but prone to high variance and overfitting.",
+            "Random Forest Classifier (Selected): Accuracy ~88% | Superior generalization, ensemble stability, and robust feature ranking.",
+            "Clinical Optimization: High Recall / Sensitivity prioritized to minimize fatal false negatives (ensuring high-risk cases are caught)."
+        ]
+    },
+    {
+        "title": "5. Lean Canvas Business Overview",
+        "subtitle": "Sustainable Delivery Model",
+        "points": [
+            "Problem: Asymptomatic CVD onset, delayed diagnosis in PHCs, complex lab reports.",
+            "Customer Segments: Primary health clinics, local diagnostic labs, adults aged 30+, corporate wellness programs.",
+            "Unique Value Proposition: Instant, explainable cardiac risk assessment translating routine clinical vitals into actionable preventive roadmaps.",
+            "Channels & Revenue: Web interface (ml.py), diagnostic clinic partnerships; B2B diagnostic API subscriptions & Freemium reports."
+        ]
+    },
+    {
+        "title": "6. Application Prototype: ml.py",
+        "subtitle": "Interactive Streamlit Web Dashboard",
+        "points": [
+            "Single-File Architecture: Built entirely in ml.py integrating data preprocessing, model inference, and UI.",
+            "Interactive Input Controls: Dynamic sliders for Age, Blood Pressure, Cholesterol, and Maximum Heart Rate.",
+            "Metabolic Risk Flags: Fasting Blood Sugar selector (> 120 mg/dl) for diabetic risk cross-check.",
+            "Instant Feedback: One-click analysis providing clear probability gauges, warnings, and physician consultation guidance.",
+            "[Insert Screenshot of Running ml.py Interface Here]"
+        ]
+    },
+    {
+        "title": "7. Future Roadmap & Conclusion",
+        "subtitle": "Scalability and Impact",
+        "points": [
+            "Continuous Wearable Integration: Direct sync with smartwatches for continuous heart rate variability (HRV) and sleep tracking.",
+            "Multi-Disease Engine: Expanding classification architecture to evaluate Type-2 Diabetes and chronic hypertension comorbidities.",
+            "Multilingual Support: Adding regional language support for broader adoption across rural health centers.",
+            "Conclusion: CardioGuard bridges the accessibility gap between routine vitals and preventative medical intervention."
+        ]
+    }
+]
+
+for s in slides_data:
+    slide = prs.slides.add_slide(blank_layout)
+    
+    # Title
+    tb = slide.shapes.add_textbox(Inches(0.8), Inches(0.6), Inches(11.7), Inches(1.2))
+    tf = tb.text_frame
+    tf.word_wrap = True
+    p = tf.paragraphs[0]
+    p.text = s["title"]
+    p.font.size = Pt(28)
+    p.font.bold = True
+    p.font.color.rgb = RGBColor(15, 98, 254)
+    
+    p2 = tf.add_paragraph()
+    p2.text = s["subtitle"]
+    p2.font.size = Pt(15)
+    p2.font.color.rgb = RGBColor(110, 110, 110)
+    
+    # Body points
+    cb = slide.shapes.add_textbox(Inches(0.8), Inches(2.0), Inches(11.7), Inches(4.8))
+    cf = cb.text_frame
+    cf.word_wrap = True
+    for idx, pt in enumerate(s["points"]):
+        cp = cf.paragraphs[0] if idx == 0 else cf.add_paragraph()
+        cp.text = "•  " + pt
+        cp.font.size = Pt(16)
+        cp.font.color.rgb = RGBColor(40, 40, 40)
+        cp.space_after = Pt(12)
+
+prs.save("CardioGuard_Final_Presentation.pptx")
+print("File 'CardioGuard_Final_Presentation.pptx' created successfully!")
